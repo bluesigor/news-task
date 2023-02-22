@@ -1,0 +1,18 @@
+{
+    "welcome": "Welcome",
+    "login": "Login",
+    "logout": "Logout",
+    "home": "Home",
+    "news": "news",
+    "lang": "ENG",
+    "fallback":"There is nothing here!",
+    "back":"Go back!",
+    "username":"Username",
+    "pass":"Password",
+    "signin":"Sign in",
+    "loginErr":"Username or password is incorrect",
+    "account":"Profile",
+    "more":"Show more",
+    "loading":"Loading",
+    "less":"Show less"
+}
