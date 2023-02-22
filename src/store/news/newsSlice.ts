@@ -15,16 +15,47 @@ const initialState: NewsState = {
   error: null,
 };
 
-export const getNews = createAsyncThunk("news/getNews", async () => {
-  const res = await axios.get(API_BASE);
+export const getNews = createAsyncThunk(
+  "news/getNews",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(API_BASE);
 
-  return res.data;
-});
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err?.message);
+    }
+  }
+);
+
+export const deleteNews = createAsyncThunk(
+  "news/deleteNews",
+  async (id: number, { rejectWithValue, dispatch }) => {
+    try {
+      const res = await axios.delete(API_BASE + `/${id}`);
+      if (res.status !== 200) {
+        throw new Error("Failed");
+      }
+
+      dispatch(removePost(id));
+
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err?.message);
+    }
+  }
+);
 
 const newsSlice = createSlice({
   name: "newsSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    removePost: (state, action: PayloadAction<number>) => {
+      state.data = state.data.filter(
+        (post: Sharable.NewsEntity) => post.id !== action.payload
+      );
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(getNews.pending, (state) => {
@@ -44,5 +75,7 @@ const newsSlice = createSlice({
       });
   },
 });
+
+export const { removePost } = newsSlice.actions;
 
 export default newsSlice.reducer;
